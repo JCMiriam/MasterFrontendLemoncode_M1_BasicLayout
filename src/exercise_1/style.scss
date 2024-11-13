@@ -1,45 +1,93 @@
-$purple: #67357c;
-$pink: #e05e76;
-$gold: #f0b261;
+@use 'typeface-roboto';
+@use '../common/colors' as *;
 
 $base-spacing: 5px;
 
+@mixin color-variations($base-color, $text-color: false) {
+    .darken-4 { background-color: darken($base-color, 40%); }
+    .darken-3 { background-color: darken($base-color, 30%); }
+    .darken-2 { background-color: darken($base-color, 20%); }
+    .darken-1 { background-color: darken($base-color, 10%); }
+    .base-color { background-color: $base-color; }
+    .lighten-1 { background-color: lighten($base-color, 10%); }
+    .lighten-2 { background-color: lighten($base-color, 20%); }
+    .lighten-3 { background-color: lighten($base-color, 30%); }
+    .lighten-4 { background-color: lighten($base-color, 40%); }
+
+    @if $text-color {
+        .lighten-4 .color-box-text { color: darken($base-color, 40%); }
+        .lighten-3 .color-box-text { color: darken($base-color, 30%); }
+        .lighten-2 .color-box-text { color: darken($base-color, 20%); }
+        .lighten-1 .color-box-text { color: darken($base-color, 10%); }
+        .base-color .color-box-text { color: if(lightness($base-color) > 50%, darken($base-color, 30%), lighten($base-color, 30%)); }
+        .darken-1 .color-box-text { color: lighten($base-color, 10%); }
+        .darken-2 .color-box-text { color: lighten($base-color, 20%); }
+        .darken-3 .color-box-text { color: lighten($base-color, 30%); }
+        .darken-4 .color-box-text { color: lighten($base-color, 40%); }
+    }
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: $gray-background;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
 .section {
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     gap: $base-spacing;
+    background-color: $white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: $deep-boxShadow;
 }
+
 .container {
     display: flex;
     justify-content: center;
     gap: $base-spacing;
 }
-.box {
-    width: 100px;
-    height: 100px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;;
-    cursor: pointer;
 
-    &:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        transform: scale(1.3);
+.container-1, .container-2, .container-3 {
+    @extend .container;
+
+    .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: $base-boxShadow;
+        transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+        cursor: pointer;
+    
+        &:hover {
+            box-shadow: $deep-boxShadow;
+            transform: scale(1.3);
+        }
+
+        .color-box-text:first-child {
+            font-weight: 700;
+        }
     }
 }
 
-.container-1, .container-2, .container-3 {
-    @extend .container
+.container-1 {
+    @include color-variations($purple-deep, $gray-medium)
 }
 
-.container-1 .box {
-    background-color: $purple;
+.container-2 {
+    @include color-variations($purple-medium, $gray-medium)
 }
 
-.container-2 .box {
-    background-color: $pink;
-}
-
-.container-3 .box {
-    background-color: $gold;
+.container-3 {
+    @include color-variations($pink-strong, $gray-medium)
 }
